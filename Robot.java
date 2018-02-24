@@ -22,8 +22,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//Test
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -132,12 +130,7 @@ public class Robot extends IterativeRobot {
 		autonChooser.addObject("Do nothing", auton6);
 		
 		SmartDashboard.putData("CHOOSE YA AUTON MODE MY DUDES!!!", autonChooser);
-		
-		
-		//armTal.configNominalOutputForward(arg0, arg1);
-		//armTal.configPeakOutputForward(arg0, arg1);
-		 
-		
+		 		
 		//Starts the robot's camera
 		
 		//Right victors following rightTalonSRX
