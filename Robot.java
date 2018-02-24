@@ -31,14 +31,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	
-	//This is a test
-	
 	private static final String auton1 = "Cross the autoline"; //Written by Madhur and Kevin
 	private static final String auton2 = "Position A (left) Switch/Scale/Autoline"; //Written by Gavin and Moesha
 	private static final String auton3 = "Position B (Middle) - Switch/Autoline"; //Written by Vedh
 	private static final String auton4 = "Position C (right) - Switch/Scale/Autoline"; //Written by Gavin and Moesha
-	private static final String auton5	= "Enter position A or B in preferences - To drop cube or not to drop cube"; //Written by Nick	
+	private static final String auton5 = "Enter position A or B in preferences - To drop cube or not to drop cube"; //Written by Nick
+	private static final String auton6 = "Do nothing";
 	private String autonSelected;
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
@@ -129,6 +127,7 @@ public class Robot extends IterativeRobot {
 		autonChooser.addObject("Position B (Robot in the middle) - Switch/Scale/Autoline", auton3); //Vedh
 		autonChooser.addObject("Position C (robot on the right) - Switch/Scale/Autoline", auton4); //Gavin and Moesha
 		autonChooser.addObject("Enter position A or B in preferences - To drop cube or not to drop cube", auton5); //Nick
+		autonChooser.addObject("Do nothing", auton6);
 		
 		SmartDashboard.putData("CHOOSE YA AUTON MODE MY DUDES!!!", autonChooser);
 		
@@ -233,6 +232,12 @@ public class Robot extends IterativeRobot {
 			case auton5:
 				
 				startingPositionPicker.positionPickerAuton();
+				
+				break;
+				
+			case auton6:
+				
+				//Do nothing
 				
 			default: 
 								
