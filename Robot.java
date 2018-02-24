@@ -130,9 +130,7 @@ public class Robot extends IterativeRobot {
 		autonChooser.addObject("Do nothing", auton6);
 		
 		SmartDashboard.putData("CHOOSE YA AUTON MODE MY DUDES!!!", autonChooser);
-		 		
-		//Starts the robot's camera
-		
+		 				
 		//Right victors following rightTalonSRX
 		rVic1.follow(rTal);
 		rVic2.follow(rTal);
