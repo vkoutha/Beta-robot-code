@@ -54,7 +54,7 @@ public class positionASwitchScale {
 		
 		//Receives Message from game
 		//Receives Message from game
-		System.out.println(gameData);
+		System.out.println("Orientation of switches and scale: " + gameData);
 		//Receives first letter of message from game
 		gameData.substring(0, 1);
 		
@@ -62,23 +62,33 @@ public class positionASwitchScale {
 		if (gameData.substring(0, 1).equalsIgnoreCase("L")) {
 			
 			if (time.get()>0 && time.get()<5){
+				//Go straight
 				rightTalonMotor.set(ControlMode.PercentOutput, -.15);
 				leftTalonMotor.set(ControlMode.PercentOutput, .15);
 			
-			//It take a 90 degree turn 
 			}else if (time.get()> 5 && time.get()<6.5) {
+				//It take a 90 degree turn 
 				rightTalonMotor.set(ControlMode.PercentOutput, .165);
 				leftTalonMotor.set(ControlMode.PercentOutput, .165);
-			}
-			//Drives straight
-			else if (time.get()>6.5 && time.get()<7) {
-				rightTalonMotor.set(ControlMode.PercentOutput, -.175);
-				leftTalonMotor.set(ControlMode.PercentOutput, .175);
-			}
-			//program stops for driving
-			else if (time.get()>7 && time.get()<=8) {
+				
+			}else if (time.get()>6.5 && time.get()<7) {
+				//Go straight to switch for a small bit
+				rightTalonMotor.set(ControlMode.PercentOutput, -.125);
+				leftTalonMotor.set(ControlMode.PercentOutput, .125);
+				
+			}else if (time.get()>7 && time.get()<=8) {
+				//Stop drive train and start moving arm up
 				rightTalonMotor.set(ControlMode.PercentOutput, 0);
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
+				TalonArmMotor.set(ControlMode.Velocity, 10);
+				
+			}else if (time.get()>8 && time.get()<10){
+				//Stop the arm from going up and push out cubes
+				TalonArmMotor.set(ControlMode.Velocity, 0);
+				TalonIntakeMotor.set(ControlMode.PercentOutput, -1);
+			}else if (time.get()>10){
+				//Stop intake motor
+				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
 			}
 			
 		}
