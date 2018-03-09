@@ -53,13 +53,10 @@ public class positionASwitchScale {
 	public void posAStart(){
 		
 		//Receives Message from game
-		//Receives Message from game
 		System.out.println("Orientation of switches and scale: " + gameData);
-		//Receives first letter of message from game
-		gameData.substring(0, 1);
 		
-		//Follow code if first letter from game is L for position A
 		if (gameData.substring(0, 1).equalsIgnoreCase("L")) {
+			//Follow code if first letter from game is L for position A
 			
 			if (time.get()>0 && time.get()<5){
 				//Go straight
@@ -67,7 +64,7 @@ public class positionASwitchScale {
 				leftTalonMotor.set(ControlMode.PercentOutput, .15);
 			
 			}else if (time.get()> 5 && time.get()<6.5) {
-				//It take a 90 degree turn 
+				//It take a 90 degree turn to the right
 				rightTalonMotor.set(ControlMode.PercentOutput, .165);
 				leftTalonMotor.set(ControlMode.PercentOutput, .165);
 				
@@ -91,30 +88,52 @@ public class positionASwitchScale {
 				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
 			}
 			
-		}
-		//Drives straight 
-		
-		//Receives Letter R from message
-		else if (gameData.substring(0, 1).equalsIgnoreCase("R")) {
 			
-			if (time.get()<=10) {
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
-			}
-			//takes a 90 degree turn
-			if (time.get()>10 && time.get()<=11) {	
-				rightTalonMotor.set(ControlMode.PercentOutput, .4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
-			}
-			//Motor stop
-			if (time.get()>11) {
+			//If scale is on our left side but switch is on our right
+		}else if (gameData.substring(1, 2).equalsIgnoreCase("L") && gameData.substring(0,1).equalsIgnoreCase("R")) {
+			
+			if (time.get()>0 && time.get()<=6) {
+				//Go forward for 6 seconds to the scale
+				rightTalonMotor.set(ControlMode.PercentOutput, -.15);
+				leftTalonMotor.set(ControlMode.PercentOutput, .15);
+				
+			}else if (time.get()>6 && time.get()<7.5) {	
+				//Turn right to face the scale
+				rightTalonMotor.set(ControlMode.PercentOutput, .175);
+				leftTalonMotor.set(ControlMode.PercentOutput, .175);
+				
+			}else if (time.get()>7.5 && time.get()<10) {
+				//Stop motors
 				rightTalonMotor.set(ControlMode.PercentOutput, 0);
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
+				TalonArmMotor.set(ControlMode.Velocity, 10);
+				
+			}else if (time.get()>10 && time.get()<12.5){
+				TalonArmMotor.set(ControlMode.Velocity, 0);
+				TalonIntakeMotor.set(ControlMode.PercentOutput, -1);
+				
+			}else if (time.get()>12.5){
+				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
 			}
 			
-		}
-		//drives straight for 10 seconds
-		
+		}else if (gameData.substring(0, 1).equalsIgnoreCase("R") && gameData.substring(1, 2).equalsIgnoreCase("R")){
+			//If we don't own the switch or the scale on the left side, just cross the autoline
+			
+			if(time.get()<4.2) {
+				
+				//Drive forward for 4 seconds
+				rightTalonMotor.set(ControlMode.PercentOutput,-.2);
+				leftTalonMotor.set(ControlMode.PercentOutput,.2);
+				
+			}else if(time.get()>=4.2) {
+				
+				//After 4 seconds, stop moving
+				rightTalonMotor.set(ControlMode.PercentOutput, 0);
+				leftTalonMotor.set(ControlMode.PercentOutput, 0);
+				
+			}
+			
+		}		
 
 	}
 	

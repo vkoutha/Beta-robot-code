@@ -53,7 +53,7 @@ public class positionCSwitchScale {
 	public void posCStart(){
 		
 		
-		System.out.println(gameData);
+		System.out.println("Orientation of switch and scale: " + gameData);
 		
 		if (gameData.substring(0, 1).equalsIgnoreCase("R")) {
 			
@@ -98,7 +98,7 @@ public class positionCSwitchScale {
 		
 			
 		//Receives letter L from message
-		else if (gameData.substring(0, 1).equalsIgnoreCase("L")) {
+		else if (gameData.substring(1, 2).equalsIgnoreCase("R") && gameData.substring(0, 1).equals("L")) {
 
 			if (Time.get()<=10) {
 				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
