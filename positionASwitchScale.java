@@ -57,21 +57,23 @@ public class positionASwitchScale {
 		System.out.println(gameData);
 		//Receives first letter of message from game
 		gameData.substring(0, 1);
+		
 		//Follow code if first letter from game is L for position A
 		if (gameData.substring(0, 1).equalsIgnoreCase("L")) {
-			if (time.get()==0)
+			
+			if (time.get()>0 && time.get()<5)
 				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
 				leftTalonMotor.set(ControlMode.PercentOutput, .4);
 			
 			//It take a 90 degree turn 
-			if (time.get()>=5) {
-				rightTalonMotor.set(ControlMode.PercentOutput, .4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
+			if (time.get()> 5 && time.get()<6.5) {
+				rightTalonMotor.set(ControlMode.PercentOutput, .165);
+				leftTalonMotor.set(ControlMode.PercentOutput, .165);
 			}
 			//Drives straight
 			if (time.get()>=6 && time.get()<=7) {
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
+				rightTalonMotor.set(ControlMode.PercentOutput, .4);
+				leftTalonMotor.set(ControlMode.PercentOutput, -.4);
 			}
 			//program stops for driving
 			if (time.get()>=7 && time.get()<=8) {

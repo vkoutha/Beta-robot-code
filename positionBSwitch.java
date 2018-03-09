@@ -71,42 +71,37 @@ public class positionBSwitch {
 			
 			if(timerN .get()>0&&timerN.get()<.4){
 				//Go forward for small bit
-			lTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);	
-			rTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
+			lTalN.set(ControlMode.PercentOutput, .35);	
+			rTalN.set(ControlMode.PercentOutput, -.35);
 			
 			}else if(timerN.get()<1.9&&timerN.get()>.4){
 				//Turn right
-			lTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
-			rTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
+			lTalN.set(ControlMode.PercentOutput, .165);
+			rTalN.set(ControlMode.PercentOutput, .165);
 			
-			}else if(timerN.get()>1.9&&timerN.get()<2.5){
-				//Go straight for a little bit
-				lTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
+			}else if(timerN.get()>1.9&&timerN.get()<2.9){
+				//Go forward
+				lTalN.set(ControlMode.PercentOutput, .325 );
+				rTalN.set(ControlMode.PercentOutput, -.325);
 				
-			}else if(timerN.get()>2.5&&timerN.get()<4){
-				//Turn left to face switch
-				lTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
-				
-			}else if(timerN.get()>4&&timerN.get()<5.5){
-				//Go straight to switch	
-				lTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
-				
-			}else if (timerN.get()>5.85&&timerN.get()<6){
-				//Stops once at switch
+			}else if(timerN.get()>2.9&&timerN.get()<4.4){
+				//Turn left
+				lTalN.set(ControlMode.PercentOutput, -.15);
+				rTalN.set(ControlMode.PercentOutput, -.15);
+			}else if(timerN.get()>4.4&&timerN.get()<6){
+				//Go forward
+				lTalN.set(ControlMode.PercentOutput, .26);
+				rTalN.set(ControlMode.PercentOutput, -.26);
+			}else if(timerN.get()>5.8&&timerN.get()<7){
 				lTalN.set(ControlMode.PercentOutput, 0);
 				rTalN.set(ControlMode.PercentOutput, 0);
-				
-			}else if (timerN.get()>6 && timerN.get()<8.5){
-				//armTalN.set(ControlMode.PercentOutput, -.7);
-				
-			}else if(timerN.get()>8.5&&timerN.get()<9.5){
-				//armTalN.set(ControlMode.PercentOutput, 0);
-				intakeTalN.set(ControlMode.PercentOutput, -.6);
-				
-			}else if(timerN.get()>9.5){
+				armTalN.set(ControlMode.PercentOutput, .1);
+			}else if(timerN.get()>7&&timerN.get()<8){
+				lTalN.set(ControlMode.PercentOutput, 0);
+				rTalN.set(ControlMode.PercentOutput, 0);
+				armTalN.set(ControlMode.PercentOutput, 0);
+				intakeTalN.set(ControlMode.PercentOutput, -.5);
+			}else if(timerN.get()>8){
 				intakeTalN.set(ControlMode.PercentOutput, 0);
 			}
 				
@@ -116,37 +111,37 @@ public class positionBSwitch {
 			
 			if(timerN.get()<2){
 				//Go straight
-				lTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
+				lTalN.set(ControlMode.PercentOutput, .15);
+				rTalN.set(ControlMode.PercentOutput, -.15);
 				
 			}else if(timerN.get()>2 && timerN.get()<3.5){
 				//Turn left
-				lTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
+				lTalN.set(ControlMode.PercentOutput, -.175);
+				rTalN.set(ControlMode.PercentOutput, -.175);
 				
 			}else if(timerN.get()>3.5&&timerN.get()<5.5){
 				//Go straight
-				lTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
+				lTalN.set(ControlMode.PercentOutput, .325);
+				rTalN.set(ControlMode.PercentOutput, -.325);
 				
-			}else if(timerN.get()>5.5&&timerN.get()<7){
+			}else if(timerN.get()>5.5&&timerN.get()<7.4){
 				//Turn right
-				lTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
+				lTalN.set(ControlMode.PercentOutput, .175);
+				rTalN.set(ControlMode.PercentOutput, .175);
 				
-			}else if(timerN.get()>7&&timerN.get()<9){
+			}else if(timerN.get()>7.4&&timerN.get()<9.4){
 				//Go straight to switch
-				lTalN.set(ControlMode.PercentOutput, AUTONSPEEDN);
-				rTalN.set(ControlMode.PercentOutput, NAUTONSPEEDN);
-			}else if (timerN.get()>9 && timerN.get()<11){
+				lTalN.set(ControlMode.PercentOutput, .23);
+				rTalN.set(ControlMode.PercentOutput, -.23);
+			}else if (timerN.get()>9.4 && timerN.get()<11.4){
 				//Stops once at switch
 				lTalN.set(ControlMode.PercentOutput, 0);
 				rTalN.set(ControlMode.PercentOutput, 0);
-				//armTalN.set(ControlMode.PercentOutput, -.7);
-			}else if (timerN.get()>11 && timerN.get()<13){
+				//armTalN.set(ControlMode.PercentOutput, .1);
+			}else if (timerN.get()>11.4 && timerN.get()<13.4){
 				//armTalN.set(ControlMode.PercentOutput, 0);
 				intakeTalN.set(ControlMode.PercentOutput, -.5);
-			}else if(timerN.get()>13){
+			}else if(timerN.get()>13.4){
 				intakeTalN.set(ControlMode.PercentOutput, 0);
 			}
 		}

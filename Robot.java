@@ -75,6 +75,7 @@ public class Robot extends IterativeRobot {
 	
 	DigitalInput upSwitch = new DigitalInput(0); //lSwitch
 	DigitalInput downSwitch = new DigitalInput(1); //rSwitch
+	DigitalInput intakeSwitch = new DigitalInput(2);
 	
 	
 	Timer timer = new Timer();
@@ -90,7 +91,7 @@ public class Robot extends IterativeRobot {
 	
 	//Agrons code
 	driveTrainIntake dTI = new driveTrainIntake(lJoy, rJoy, lTal, rTal, lVic1, lVic2, rVic1, rVic2
-				, gControl, intakeTal, intakeVic);
+				, gControl, intakeTal, intakeVic, intakeSwitch);
 	
 	//Madhur and Kevin's code
 	crossAutoLine crossAL = new crossAutoLine(rTal, lTal, rVic1, lVic1, rVic2, lVic2, timer);
@@ -134,14 +135,21 @@ public class Robot extends IterativeRobot {
 		//Right victors following rightTalonSRX
 		rVic1.follow(rTal);
 		rVic2.follow(rTal);
+		
 		//Left victors following leftTalonSRX
 		lVic1.follow(lTal);
 		lVic2.follow(lTal);
+		
 		//Arm victor following Arm talon
 		armTal.setInverted(true);
+		armTal.setSensorPhase(true);
+		
+		//armTal.configPeakOutputForward(-1, 1);
+		//armTal.configPeakOutputReverse(-1, 1);
+		//armTal.configNominalOutputForward(-1, 1);
+		//armTal.configNominalOutputReverse(-1, 1);
+		
 		armVic.follow(armTal);
-		
-		
 		
 		//Intake victor following inake talon
 		intakeVic.setInverted(true);
@@ -185,8 +193,8 @@ public class Robot extends IterativeRobot {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		//position = Preferences.getInstance();
 	   // startingPosition = position.getString("startingPosition", null); //Get robot starting position
-		System.out.println(gameData);
-        System.out.println("Starting position: " + startingPosition);
+		System.out.println("Orientation of switches and scale: " + gameData);
+        //System.out.println("Starting position: " + startingPosition);
 
 		timer.reset();
 		
@@ -210,6 +218,7 @@ public class Robot extends IterativeRobot {
 				posASwitchScale.posAStart();
 				break;
 			case auton3:
+				
 				//Written by Vedh
 				/*pBS is NOT for PBS kids channel where you can watch Cyberchase or whatever that show with the giant talking computer giving out
 				missions was called*/
@@ -230,7 +239,7 @@ public class Robot extends IterativeRobot {
 				
 			case auton6:
 				
-				//Do nothing
+				//Do nothing autonomous mode
 				
 			default: 
 								
@@ -251,7 +260,6 @@ public class Robot extends IterativeRobot {
 		intakeVic.follow(intakeVic);
 				
 		//armTal.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0 ,0);
-		armTal.setSensorPhase(true);
 		System.out.println("Arm motor: " + armTal.getSelectedSensorVelocity(0));
 		
 		//System.out.println("Right motor: " + rTal.getSelectedSensorVelocity(0));

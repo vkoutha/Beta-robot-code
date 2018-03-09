@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 
 //CODE WRITTEN BY AGRON, EMRE, AND DAN
@@ -35,9 +36,11 @@ public class driveTrainIntake {
 		TalonSRX realIntake;
 		//Intake victor
 		VictorSPX invertedIntake; 
+		
+		DigitalInput intakeLim;
 			
 		public driveTrainIntake(Joystick lJoy, Joystick rJoy, TalonSRX lTal, TalonSRX rTal, VictorSPX lVic1, VictorSPX lVic2, VictorSPX rVic1, VictorSPX rVic2
-				, Joystick gControl, TalonSRX intakeTal, VictorSPX intakeVic){
+				, Joystick gControl, TalonSRX intakeTal, VictorSPX intakeVic, DigitalInput intakeSwitch){
 			
 			
 			joy1 = lJoy;
@@ -51,6 +54,7 @@ public class driveTrainIntake {
 			joy3 = gControl;
 			realIntake = intakeTal;
 			invertedIntake = intakeVic;
+			intakeLim = intakeSwitch;
 			
 		}
 	
@@ -66,28 +70,36 @@ public class driveTrainIntake {
 		
 	
 			//If right button is pressed, suck cubes in
-			if  (joy3.getRawButtonPressed(6) == true) {
+			if  (joy3.getRawButtonPressed(6) == true && intakeLim.get()==true) {
 				
 				realIntake.set(ControlMode.PercentOutput, -1);
 			//If right button is not pressed, turn off the intake
 				
-			}else if(joy3.getRawButtonReleased(6)==true) {
+			}else if(joy3.getRawButtonReleased(6)==true && intakeLim.get()==true) {
 				
 				realIntake.set(ControlMode.PercentOutput, 0);
 				
+			}else if (joy3.getRawButtonPressed(6)==true && intakeLim.get()==false){
+				
+				//If limit switch is pressed and cubes are being sucked in, stop the motor
+				realIntake.set(ControlMode.PercentOutput, 0);
+				invertedIntake.set(ControlMode.PercentOutput, 0);
 			}
 			
 			//if left button is pressed, suck cubes in
-			if (joy3.getRawButtonPressed(5) == true) {
+			if (joy3.getRawButtonPressed(5) == true && intakeLim.get()==true) {
 				
 				invertedIntake.set(ControlMode.PercentOutput, -1);
 			//If left button is not pressed, turn off the intake
 				
-			}else if(joy3.getRawButtonReleased(5)==true) {
+			}else if(joy3.getRawButtonReleased(5)==true && intakeLim.get()==true) {
 				
 				invertedIntake.set(ControlMode.PercentOutput, 0);
 				
-				
+			}else if (joy3.getRawButtonPressed(5)==true && intakeLim.get()==false){
+				//If limit switch is pressed and cubes are being sucked in, stop the motor
+				realIntake.set(ControlMode.PercentOutput, 0);
+				invertedIntake.set(ControlMode.PercentOutput, 0);
 			}
 			
 			//Controlling one intake side at a time

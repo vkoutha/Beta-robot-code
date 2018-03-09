@@ -49,11 +49,11 @@ public class armControl {
 				MControl1.set(ControlMode.Velocity, 0);
 				//Switch 2 is pressed, so the motor speed is set to 0
 			}else if(GControl.getY()<0){
-				MControl1.set(ControlMode.Velocity, GControl.getY());
+				MControl1.set(ControlMode.Velocity, GControl.getY()*-10);
 				//Switch 2 is pressed, but it doesn't matter because the controller is going in the other direction
 			}
 		}else if(LSwitch1.get()==true && LSwitch2.get()==true){
-			MControl1.set(ControlMode.Velocity, GControl.getY());
+			MControl1.set(ControlMode.Velocity, GControl.getY()*-10);
 			//Switch 1 and Switch 2 are not pressed
 		}else if(LSwitch1.get()==false && LSwitch2.get()==false){
 			//Both Switch 1 and switch 2 are pressed
@@ -61,7 +61,7 @@ public class armControl {
 			MControl1.set(ControlMode.Velocity, 0);
 		}else{
 			//This is if switch 1 or switch 2 is not pressed
-			MControl1.set(ControlMode.Velocity, GControl.getY());
+			MControl1.set(ControlMode.Velocity, GControl.getY()*-10);
 		}
 	}
 	
