@@ -57,41 +57,34 @@ public class positionCSwitchScale {
 		
 		if (gameData.substring(0, 1).equalsIgnoreCase("R")) {
 			
-			if (Time.get()==0){
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
-				}
-			//Takes a 90 degree turn
-			if (Time.get()==5) {
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, -.4);
-			}
-			//Drives Straight
-			if (Time.get()>=6 && Time.get()<=7) {
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
-			}
-			//program stops for driving
-			if (Time.get()>=7 && Time.get()<=8) {
+			if (Time.get()>0 && Time.get()<5){
+				//Go straight
+				rightTalonMotor.set(ControlMode.PercentOutput, -.15);
+				leftTalonMotor.set(ControlMode.PercentOutput, .15);
+			
+			}else if (Time.get()> 5 && Time.get()<6.5) {
+				//It take a 90 degree turn to the right
+				rightTalonMotor.set(ControlMode.PercentOutput, -.165);
+				leftTalonMotor.set(ControlMode.PercentOutput, -.165);
+				
+			}else if (Time.get()>6.5 && Time.get()<7) {
+				//Go straight to switch for a small bit
+				rightTalonMotor.set(ControlMode.PercentOutput, -.125);
+				leftTalonMotor.set(ControlMode.PercentOutput, .125);
+				
+			}else if (Time.get()>7 && Time.get()<=8) {
+				//Stop drive train and start moving arm up
 				rightTalonMotor.set(ControlMode.PercentOutput, 0);
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
-			}
-			//Move arm up
-			if (Time.get()>=0 && Time.get()<=1) {
-				//TalonArmMotor.set(ControlMode.PercentOutput, -.1);
-			}
-			//Stops arm
-			if (Time.get()>2) {
-				//TalonArmMotor.set(ControlMode.PercentOutput, 0);
-			}
-			//intake spits out cube
-			if (Time.get()>=1 && Time.get()<=2) {
-				TalonIntakeMotor.set(ControlMode.PercentOutput, .5);
-			}
-			//stops intake
-			if (Time.get()>=2) {
-				//TalonArmMotor.set(ControlMode.PercentOutput, 0);
-			
+				TalonArmMotor.set(ControlMode.Velocity, 10);
+				
+			}else if (Time.get()>8 && Time.get()<10){
+				//Stop the arm from going up and push out cubes
+				TalonArmMotor.set(ControlMode.Velocity, 0);
+				TalonIntakeMotor.set(ControlMode.PercentOutput, -1);
+			}else if (Time.get()>10){
+				//Stop intake motor
+				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
 			}
 			
 		}
@@ -100,24 +93,36 @@ public class positionCSwitchScale {
 		//Receives letter L from message
 		else if (gameData.substring(1, 2).equalsIgnoreCase("R") && gameData.substring(0, 1).equals("L")) {
 
-			if (Time.get()<=10) {
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, .4);
-			}
-			//takes a 90 degree turn
-			if (Time.get()>10 && Time.get()<=11) {	
-				rightTalonMotor.set(ControlMode.PercentOutput, -.4);
-				leftTalonMotor.set(ControlMode.PercentOutput, -.4);
-			}
-			//Motor stop
-			if (Time.get()>11) {
+			if (Time.get()>0 && Time.get()<=6) {
+				//Go forward for 6 seconds to the scale
+				rightTalonMotor.set(ControlMode.PercentOutput, -.15);
+				leftTalonMotor.set(ControlMode.PercentOutput, .15);
+				
+			}else if (Time.get()>6 && Time.get()<7.5) {	
+				//Turn right to face the scale
+				rightTalonMotor.set(ControlMode.PercentOutput, -.175);
+				leftTalonMotor.set(ControlMode.PercentOutput, -.175);
+				
+			}else if (Time.get()>7.5 && Time.get()<10) {
+				//Stop motors
 				rightTalonMotor.set(ControlMode.PercentOutput, 0);
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
-					}
-				}
+				TalonArmMotor.set(ControlMode.Velocity, 10);
+				
+			}else if (Time.get()>10 && Time.get()<12.5){
+				
+				//Starts the intake to spit out cubes
+				TalonArmMotor.set(ControlMode.Velocity, 0);
+				TalonIntakeMotor.set(ControlMode.PercentOutput, -1);
+				
+			}else if (Time.get()>12.5){
+				//Stops the intake
+				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
+			}
 			
 		}
 		
+	}
 		//drives straight for 10 seconds
 		
 		
