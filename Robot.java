@@ -154,9 +154,7 @@ public class Robot extends IterativeRobot {
 		//Intake victor following inake talon
 		intakeVic.setInverted(true);
 		//Setting Intake victor opposite of intake talon
-		
-		//Start the timer
-		
+				
 		//Prints out random stuff that you don't really need to know
 		System.out.println("Temperature of PDP: " + pDP.getTemperature() + " Degrees Fahrenheit");
 		System.out.println("Voltage through Power Distribution Panel: " + pDP.getVoltage() + " volts");
