@@ -38,7 +38,7 @@ public class crossAutoLine {
 			rightTalon.set(ControlMode.PercentOutput,-.2);
 			leftTalon.set(ControlMode.PercentOutput,.2);
 			
-		} else if(autoTime.get()>=4.1) {
+		}else if(autoTime.get()>=4.1) {
 			//After 4 seconds, stop moving
 			rightTalon.set(ControlMode.PercentOutput, 0);
 			leftTalon.set(ControlMode.PercentOutput, 0);

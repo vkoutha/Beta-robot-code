@@ -45,6 +45,8 @@ public class Robot extends IterativeRobot {
 	
 	final double AUTONSPEED = .4;
 	final double NAUTONSPEED = -.4;
+	
+	boolean firstRun = true;
 
 	 Preferences position;
 	 String startingPosition;
@@ -112,6 +114,15 @@ public class Robot extends IterativeRobot {
 			intakeVic, rVic1, rVic2, lVic1, lVic2, timer);
 	
 	
+	encPosB ePB = new encPosB(AUTONSPEED, NAUTONSPEED, lTal, rTal, rVic1, rVic2, lVic1, lVic2, timer, armTal, armVic,
+			intakeTal, intakeVic);
+	
+	encPosA ePA = new encPosA(rTal, lTal, armTal, armVic, intakeTal,
+			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	
+	encPosC ePC = new encPosC(rTal, lTal, armTal, armVic, intakeTal,
+			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	
 
 	
 	/**
@@ -131,7 +142,7 @@ public class Robot extends IterativeRobot {
 		autonChooser.addObject("Do nothing", auton6);
 		
 		SmartDashboard.putData("CHOOSE YA AUTON MODE MY DUDES!!!", autonChooser);
-		 				
+		
 		//Right victors following rightTalonSRX
 		rVic1.follow(rTal);
 		rVic2.follow(rTal);
@@ -155,13 +166,10 @@ public class Robot extends IterativeRobot {
 		intakeVic.setInverted(true);
 		//Setting Intake victor opposite of intake talon
 				
-		//Prints out random stuff that you don't really need to know
-		System.out.println("Temperature of PDP: " + pDP.getTemperature() + " Degrees Fahrenheit");
-		System.out.println("Voltage through Power Distribution Panel: " + pDP.getVoltage() + " volts");
-		System.out.println("Total current through all PDP channels: " + pDP.getTotalCurrent() + " amps");
-		System.out.println("Total power through all PDP channels: " + pDP.getTotalEnergy() + " watts");
 		
 		timer.start();
+		
+		
 	}
 
 	/**
@@ -189,6 +197,10 @@ public class Robot extends IterativeRobot {
 		//It prints the orientation of the scale and switch at the beginning of autonomous mode by giving it in three characters, either L or R. 
 		//This tells you whether your side of the game piece is on the left or right, starting from the side closest to you.
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		ePB.gameData = this.gameData;
+		ePA.gameData = this.gameData;
+		ePC.gameData = this.gameData;
+		
 		//position = Preferences.getInstance();
 	   // startingPosition = position.getString("startingPosition", null); //Get robot starting position
 		System.out.println("Orientation of switches and scale: " + gameData);
@@ -203,6 +215,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		
+		if (firstRun == true){
+			lTal.setSelectedSensorPosition(0, 0, 0);
+		}
+		
+		firstRun = false;
+		
 		switch (autonSelected) {
 		
 
@@ -255,15 +274,21 @@ public class Robot extends IterativeRobot {
 		
 		//Servo
 		
-		intakeVic.follow(intakeVic);
+		intakeVic.valueUpdated();
 				
 		//armTal.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0 ,0);
 		System.out.println("Arm motor: " + armTal.getSelectedSensorVelocity(0));
+		
+		System.out.println("Right Motor encoder position: " + rTal.getSelectedSensorPosition(0));
+		System.out.println("Left Motor encoder position: " + lTal.getSelectedSensorPosition(0));
+
+
 		
 		//System.out.println("Right motor: " + rTal.getSelectedSensorVelocity(0));
 		//System.out.println("Left motor " +lTal.getSelectedSensorVelocity(0));
 		armC.armStart();
 		dTI.dTIntake();
+		
 
 		
 		
