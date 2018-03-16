@@ -31,11 +31,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	private static final String auton1 = "Cross the autoline"; //Written by Madhur and Kevin
-	private static final String auton2 = "Position A (left) Switch/Scale/Autoline"; //Written by Gavin and Moesha
-	private static final String auton3 = "Position B (Middle) - Switch/Autoline"; //Written by Vedh
-	private static final String auton4 = "Position C (right) - Switch/Scale/Autoline"; //Written by Gavin and Moesha
-	private static final String auton5 = "Enter position A or B in preferences - To drop cube or not to drop cube"; //Written by Nick
+	private static final String auton1 = "Cross autoline"; //Written by Madhur and Kevin
+	private static final String auton2 = "Position A (L)"; //Written by Gavin and Moesha
+	private static final String auton3 = "Position B (M)"; //Written by Vedh
+	private static final String auton4 = "Position C (R)"; //Written by Gavin and Moesha
+	private static final String auton5 = "Position Picker"; //Written by Nick
 	private static final String auton6 = "Do nothing";
 	private String autonSelected;
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
@@ -135,13 +135,13 @@ public class Robot extends IterativeRobot {
 		
 		
 		autonChooser.addDefault("Cross the autoline only" , auton1 ); //Madhur and Kevin
-		autonChooser.addObject("Position A (Robot on the left)", auton2); //Gavin and Moesha
-		autonChooser.addObject("Position B (Robot in the middle) - Switch/Scale/Autoline", auton3); //Vedh
-		autonChooser.addObject("Position C (robot on the right) - Switch/Scale/Autoline", auton4); //Gavin and Moesha
-		autonChooser.addObject("Enter position A or B in preferences - To drop cube or not to drop cube", auton5); //Nick
+		autonChooser.addObject("Position A (L)", auton2); //Gavin and Moesha
+		autonChooser.addObject("Position B (M)", auton3); //Vedh
+		autonChooser.addObject("Position C (R)", auton4); //Gavin and Moesha
+		autonChooser.addObject("Position Picker", auton5); //Nick
 		autonChooser.addObject("Do nothing", auton6);
 		
-		SmartDashboard.putData("CHOOSE YA AUTON MODE MY DUDES!!!", autonChooser);
+		SmartDashboard.putData("Auton Chooser", autonChooser);
 		
 		//Right victors following rightTalonSRX
 		rVic1.follow(rTal);
@@ -154,11 +154,6 @@ public class Robot extends IterativeRobot {
 		//Arm victor following Arm talon
 		armTal.setInverted(true);
 		armTal.setSensorPhase(true);
-		
-		//armTal.configPeakOutputForward(-1, 1);
-		//armTal.configPeakOutputReverse(-1, 1);
-		//armTal.configNominalOutputForward(-1, 1);
-		//armTal.configNominalOutputReverse(-1, 1);
 		
 		armVic.follow(armTal);
 		
@@ -201,10 +196,8 @@ public class Robot extends IterativeRobot {
 		ePA.gameData = this.gameData;
 		ePC.gameData = this.gameData;
 		
-		//position = Preferences.getInstance();
-	   // startingPosition = position.getString("startingPosition", null); //Get robot starting position
+		
 		System.out.println("Orientation of switches and scale: " + gameData);
-        //System.out.println("Starting position: " + startingPosition);
 
 		timer.reset();
 		
