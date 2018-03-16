@@ -31,11 +31,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	private static final String auton1 = "Cross the autoline"; //Written by Madhur and Kevin
-	private static final String auton2 = "Position A (left) Switch/Scale/Autoline"; //Written by Gavin and Moesha
-	private static final String auton3 = "Position B (Middle) - Switch/Autoline"; //Written by Vedh
-	private static final String auton4 = "Position C (right) - Switch/Scale/Autoline"; //Written by Gavin and Moesha
-	private static final String auton5 = "Enter position A or B in preferences - To drop cube or not to drop cube"; //Written by Nick
+	private static final String auton1 = "Cross autoline"; //Written by Madhur and Kevin
+	private static final String auton2 = "Position A (L)"; //Written by Gavin and Moesha
+	private static final String auton3 = "Position B (M)"; //Written by Vedh
+	private static final String auton4 = "Position C (R)"; //Written by Gavin and Moesha
+	private static final String auton5 = "Position Picker"; //Written by Nick
 	private static final String auton6 = "Do nothing";
 	private String autonSelected;
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
@@ -45,6 +45,8 @@ public class Robot extends IterativeRobot {
 	
 	final double AUTONSPEED = .4;
 	final double NAUTONSPEED = -.4;
+	
+	boolean firstRun = true;
 
 	 Preferences position;
 	 String startingPosition;
@@ -112,6 +114,15 @@ public class Robot extends IterativeRobot {
 			intakeVic, rVic1, rVic2, lVic1, lVic2, timer);
 	
 	
+	encPosB ePB = new encPosB(AUTONSPEED, NAUTONSPEED, lTal, rTal, rVic1, rVic2, lVic1, lVic2, timer, armTal, armVic,
+			intakeTal, intakeVic);
+	
+	encPosA ePA = new encPosA(rTal, lTal, armTal, armVic, intakeTal,
+			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	
+	encPosC ePC = new encPosC(rTal, lTal, armTal, armVic, intakeTal,
+			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	
 
 	
 	/**
@@ -124,14 +135,14 @@ public class Robot extends IterativeRobot {
 		
 		
 		autonChooser.addDefault("Cross the autoline only" , auton1 ); //Madhur and Kevin
-		autonChooser.addObject("Position A (Robot on the left)", auton2); //Gavin and Moesha
-		autonChooser.addObject("Position B (Robot in the middle) - Switch/Scale/Autoline", auton3); //Vedh
-		autonChooser.addObject("Position C (robot on the right) - Switch/Scale/Autoline", auton4); //Gavin and Moesha
-		autonChooser.addObject("Enter position A or B in preferences - To drop cube or not to drop cube", auton5); //Nick
+		autonChooser.addObject("Position A (L)", auton2); //Gavin and Moesha
+		autonChooser.addObject("Position B (M)", auton3); //Vedh
+		autonChooser.addObject("Position C (R)", auton4); //Gavin and Moesha
+		autonChooser.addObject("Position Picker", auton5); //Nick
 		autonChooser.addObject("Do nothing", auton6);
 		
-		SmartDashboard.putData("CHOOSE YA AUTON MODE MY DUDES!!!", autonChooser);
-		 				
+		SmartDashboard.putData("Auton Chooser", autonChooser);
+		
 		//Right victors following rightTalonSRX
 		rVic1.follow(rTal);
 		rVic2.follow(rTal);
@@ -144,26 +155,16 @@ public class Robot extends IterativeRobot {
 		armTal.setInverted(true);
 		armTal.setSensorPhase(true);
 		
-		//armTal.configPeakOutputForward(-1, 1);
-		//armTal.configPeakOutputReverse(-1, 1);
-		//armTal.configNominalOutputForward(-1, 1);
-		//armTal.configNominalOutputReverse(-1, 1);
-		
 		armVic.follow(armTal);
 		
 		//Intake victor following inake talon
 		intakeVic.setInverted(true);
 		//Setting Intake victor opposite of intake talon
-		
-		//Start the timer
-		
-		//Prints out random stuff that you don't really need to know
-		System.out.println("Temperature of PDP: " + pDP.getTemperature() + " Degrees Fahrenheit");
-		System.out.println("Voltage through Power Distribution Panel: " + pDP.getVoltage() + " volts");
-		System.out.println("Total current through all PDP channels: " + pDP.getTotalCurrent() + " amps");
-		System.out.println("Total power through all PDP channels: " + pDP.getTotalEnergy() + " watts");
+				
 		
 		timer.start();
+		
+		
 	}
 
 	/**
@@ -191,10 +192,12 @@ public class Robot extends IterativeRobot {
 		//It prints the orientation of the scale and switch at the beginning of autonomous mode by giving it in three characters, either L or R. 
 		//This tells you whether your side of the game piece is on the left or right, starting from the side closest to you.
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		//position = Preferences.getInstance();
-	   // startingPosition = position.getString("startingPosition", null); //Get robot starting position
+		ePB.gameData = this.gameData;
+		ePA.gameData = this.gameData;
+		ePC.gameData = this.gameData;
+		
+		
 		System.out.println("Orientation of switches and scale: " + gameData);
-        //System.out.println("Starting position: " + startingPosition);
 
 		timer.reset();
 		
@@ -205,6 +208,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		
+		if (firstRun == true){
+			lTal.setSelectedSensorPosition(0, 0, 0);
+		}
+		
+		firstRun = false;
+		
 		switch (autonSelected) {
 		
 
@@ -257,15 +267,21 @@ public class Robot extends IterativeRobot {
 		
 		//Servo
 		
-		intakeVic.follow(intakeVic);
+		intakeVic.valueUpdated();
 				
 		//armTal.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0 ,0);
 		System.out.println("Arm motor: " + armTal.getSelectedSensorVelocity(0));
+		
+		System.out.println("Right Motor encoder position: " + rTal.getSelectedSensorPosition(0));
+		System.out.println("Left Motor encoder position: " + lTal.getSelectedSensorPosition(0));
+
+
 		
 		//System.out.println("Right motor: " + rTal.getSelectedSensorVelocity(0));
 		//System.out.println("Left motor " +lTal.getSelectedSensorVelocity(0));
 		armC.armStart();
 		dTI.dTIntake();
+		
 
 		
 		

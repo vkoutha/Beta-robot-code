@@ -120,6 +120,20 @@ public class positionCSwitchScale {
 				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
 			}
 			
+		}else if (gameData.substring(0,1).equals("L") && gameData.substring(1,2).equals("L")){
+			
+			if(Time.get()<4.1) {
+				//Drive forward for 4 seconds
+				rightTalonMotor.set(ControlMode.PercentOutput,-.2);
+				leftTalonMotor.set(ControlMode.PercentOutput,.2);
+				
+			} else if(Time.get()>=4.1) {
+				//After 4 seconds, stop moving
+				rightTalonMotor.set(ControlMode.PercentOutput, 0);
+				leftTalonMotor.set(ControlMode.PercentOutput, 0);
+			}
+			
+			
 		}
 		
 	}

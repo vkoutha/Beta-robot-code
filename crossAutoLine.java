@@ -33,12 +33,12 @@ public class crossAutoLine {
 	
 	public void cAL(){
 		
-		if(autoTime.get()<4) {
+		if(autoTime.get()<4.1) {
 			//Drive forward for 4 seconds
 			rightTalon.set(ControlMode.PercentOutput,-.2);
 			leftTalon.set(ControlMode.PercentOutput,.2);
 			
-		} else if(autoTime.get()>=4) {
+		}else if(autoTime.get()>=4.1) {
 			//After 4 seconds, stop moving
 			rightTalon.set(ControlMode.PercentOutput, 0);
 			leftTalon.set(ControlMode.PercentOutput, 0);
