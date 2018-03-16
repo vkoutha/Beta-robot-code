@@ -63,26 +63,29 @@ public class encPosC {
 		//If we own the right side of the switch (go to the switch)
 		if(gameData.charAt(0) == 'R' && gameData.charAt(1)=='L'){
 			
-			switch (leftTalonMotor.getSelectedSensorPosition(0)){
+			//Monitor the right talon motor for ease of turning
+			switch (rightTalonMotor.getSelectedSensorPosition(0)){
 			
-			case 1:
+			case 0:
 				
 				//Go all the way forward to side of the switch
 				leftTalonMotor.set(ControlMode.PercentOutput, .5);
 				rightTalonMotor.set(ControlMode.PercentOutput, -.5);
 				
 				break;
+			
+			//Go forward for 9216 counts of encoder
+			case 9216:
 				
-			case 2:
-				
-				//Begin raising the arm; Turn right so arm is facing the switch
+				//Begin raising the arm and turning; Turn right so arm is facing the switch
 				leftTalonMotor.set(ControlMode.PercentOutput, -.3);
 				rightTalonMotor.set(ControlMode.PercentOutput, -.3);
 				TalonArmMotor.set(ControlMode.Velocity, -6.5);
 				
 				break;
-				
-			case 3:
+			
+			//Turn for about 800 counts (needs to be tested/changed)
+			case 10000:
 				
 				//Go forward a small amount so robot hits switch
 				leftTalonMotor.set(ControlMode.PercentOutput, .3);
@@ -91,7 +94,8 @@ public class encPosC {
 				
 				break;
 				
-			case 4:
+			//Go forward for 1000 counts (needs to be tested/changed)
+			case 11000:
 				
 				//Stop wheels and start intake
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
@@ -122,17 +126,19 @@ public class encPosC {
 			//If the switch is not on our side but the scale is (go to the scale)
 			}else if (gameData.charAt(1) == 'R'){
 				
+				//Monitor the left talon motor for ease of turning (since we turn the robot's back towards the scale)
 				switch(leftTalonMotor.getSelectedSensorPosition(0)){
 				
-				case 1:
+				case 0:
 					
 					//Go forward all the way to the side of the scale
 					leftTalonMotor.set(ControlMode.PercentOutput, .5);
 					rightTalonMotor.set(ControlMode.PercentOutput, -.5);
 					
 					break;
-					
-				case 2:
+				
+				//Go forward for 17152 counts 
+				case 17152:
 					
 					//Turn so that back of the robot is facing scale; Begin raising arm
 					leftTalonMotor.set(ControlMode.PercentOutput, .3);
@@ -141,7 +147,8 @@ public class encPosC {
 					
 					break;
 				
-				case 3:
+				//Turn for about 850 counts
+				case 18000:
 					
 					//Stop moving, stop the arm, and start the intake
 					leftTalonMotor.set(ControlMode.PercentOutput, 0);
@@ -190,7 +197,7 @@ public class encPosC {
 		//If neither the switch nor the scale is on our side, the right side (just cross the autoline)
 		}else if (gameData.charAt(0) == 'L' && gameData.charAt(1) == 'L'){
 			
-			
+			//Monitor left talon motor (side does not matter)
 			switch (leftTalonMotor.getSelectedSensorPosition(0)){
 			
 			case 0:
@@ -199,7 +206,8 @@ public class encPosC {
 				rightTalonMotor.set(ControlMode.PercentOutput, -.5);
 				
 				break;
-				
+			
+			//Go forward for 6656 counts
 			case 6656:
 				
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
