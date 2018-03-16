@@ -63,7 +63,7 @@ public class encPosB {
 			
 			switch (lTalN.getSelectedSensorPosition(0)){
 			
-			case 1:
+			case 0:
 				
 				//Go straight
 				lTalN.set(ControlMode.PercentOutput, .5);
@@ -71,7 +71,7 @@ public class encPosB {
 				
 				break;
 				
-			case 2: 
+			case 1: 
 				
 				//Turn left
 				lTalN.set(ControlMode.PercentOutput, -.3);
@@ -79,7 +79,7 @@ public class encPosB {
 				
 				break;
 				
-			case 3:
+			case 2:
 				
 				//Go straight (facing left)
 				lTalN.set(ControlMode.PercentOutput, .5);	
@@ -87,7 +87,7 @@ public class encPosB {
 				
 				break;
 				
-			case 4:
+			case 3:
 				
 				//Turn right to the switch
 				lTalN.set(ControlMode.PercentOutput, .3);
@@ -95,7 +95,7 @@ public class encPosB {
 				
 				break;
 				
-			case 5:
+			case 4:
 				
 				//Stop to raise the arm
 				lTalN.set(ControlMode.PercentOutput, .3);
@@ -104,14 +104,14 @@ public class encPosB {
 				
 				break;
 				
-			case 6: 
+			case 5: 
 				
 				//Stop the arm at a certain point while still moving
 				armTalN.set(ControlMode.Velocity, -3);
 				
 				break;
 				
-			case 7: 
+			case 6: 
 				
 				//Stop once at switch and spit out the cube
 				lTalN.set(ControlMode.PercentOutput, 0);
@@ -150,7 +150,7 @@ public class encPosB {
 			
 			switch (lTalN.getSelectedSensorPosition(0)){
 			
-			case 1:
+			case 0:
 				
 				//Go straight for a little bit
 				lTalN.set(ControlMode.PercentOutput, .5);
@@ -158,7 +158,7 @@ public class encPosB {
 				
 				break;
 				
-			case 2:
+			case 1:
 				
 				//Turn to the right
 				lTalN.set(ControlMode.PercentOutput, .5);
@@ -166,7 +166,7 @@ public class encPosB {
 				
 				break;
 				
-			case 3:
+			case 2:
 				
 				//Go straight (facing the right)
 				lTalN.set(ControlMode.PercentOutput, .5);
@@ -174,7 +174,7 @@ public class encPosB {
 				
 				break;
 				
-			case 4:
+			case 3:
 				
 				//Turn left to face the switch
 				lTalN.set(ControlMode.PercentOutput, -.3);
@@ -182,7 +182,7 @@ public class encPosB {
 				
 				break;
 				
-			case 5:
+			case 4:
 				
 				//Begin raising arm and going towards the switch
 				lTalN.set(ControlMode.PercentOutput, .3);
@@ -191,14 +191,14 @@ public class encPosB {
 				
 				break; 
 				
-			case 6:
+			case 5:
 				
 				//Stop the arm from moving
 				armTalN.set(ControlMode.Velocity, -3);
 				
 				break;
 				
-			case 7:
+			case 6:
 				
 				//Stop driving and start the intake
 				lTalN.set(ControlMode.PercentOutput, 0);
