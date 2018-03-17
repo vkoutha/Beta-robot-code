@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 package org.usfirst.frc.team193.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
