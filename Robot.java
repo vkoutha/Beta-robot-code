@@ -211,6 +211,7 @@ public class Robot extends IterativeRobot {
 		
 		if (firstRun == true){
 			lTal.setSelectedSensorPosition(0, 0, 0);
+			rTal.setSelectedSensorPosition(0, 0, 0);
 		}
 		
 		firstRun = false;

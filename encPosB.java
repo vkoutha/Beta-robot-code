@@ -61,7 +61,10 @@ public class encPosB {
 		//If we own the left side of the switch
 		if (gameData.charAt(0) == 'L'){
 			
-			switch (lTalN.getSelectedSensorPosition(0)){
+			//7610 total counts to get to the front of the switch (not including turns)
+			
+			//Monitor right talon for ease of turning
+			switch (rTalN.getSelectedSensorPosition(0)){
 			
 			case 0:
 				
@@ -71,47 +74,57 @@ public class encPosB {
 				
 				break;
 				
-			case 1: 
+			//Go forward for 3000 counts
+			case 3000: 
 				
 				//Turn left
 				lTalN.set(ControlMode.PercentOutput, -.3);
 				rTalN.set(ControlMode.PercentOutput, -.3);
 				
 				break;
-				
-			case 2:
+			
+			//Left encoder counts go to 2200 and right encoder counts go to 3800
+			//Turn for 800 counts
+			case 3800:
 				
 				//Go straight (facing left)
 				lTalN.set(ControlMode.PercentOutput, .5);	
 				rTalN.set(ControlMode.PercentOutput, -.5);
 				
 				break;
-				
-			case 3:
+			
+			//Left encoder counts at 4400
+			//Go forward for 2200 counts
+			case 8900:
 				
 				//Turn right to the switch
 				lTalN.set(ControlMode.PercentOutput, .3);
 				rTalN.set(ControlMode.PercentOutput, .3);
 				
 				break;
+			
+			//Turn for 800 counts (since wheels are moving backwards, encoder counts will go backwards as well)
+			case 9800:
 				
-			case 4:
-				
+				//Making sure that it will only go forward after it turns
+				if(lTalN.getSelectedSensorPosition(0) == 9800){
 				//Stop to raise the arm
 				lTalN.set(ControlMode.PercentOutput, .3);
 				rTalN.set(ControlMode.PercentOutput, -.3);
 				armTalN.set(ControlMode.Velocity, -6.5);
 				
+				}
+				
 				break;
 				
-			case 5: 
+			case 11000: 
 				
 				//Stop the arm at a certain point while still moving
 				armTalN.set(ControlMode.Velocity, -3);
 				
 				break;
 				
-			case 6: 
+			case 14420: 
 				
 				//Stop once at switch and spit out the cube
 				lTalN.set(ControlMode.PercentOutput, 0);
@@ -123,7 +136,6 @@ public class encPosB {
 				
 				default: 
 					
-					//System.out.println("Defaulted to this in switch case");
 					
 					break;
 			
@@ -157,16 +169,19 @@ public class encPosB {
 				rTalN.set(ControlMode.PercentOutput, -.5);
 				
 				break;
-				
-			case 1:
+			
+			//Go forward for 3000 counts
+			case 3000:
 				
 				//Turn to the right
 				lTalN.set(ControlMode.PercentOutput, .5);
 				rTalN.set(ControlMode.PercentOutput, .5);
 				
 				break;
-				
-			case 2:
+			
+			//Left encoder goes to 2200 counts
+			//Turn for 800 counts
+			case 3800:
 				
 				//Go straight (facing the right)
 				lTalN.set(ControlMode.PercentOutput, .5);
@@ -174,7 +189,8 @@ public class encPosB {
 				
 				break;
 				
-			case 3:
+			//Go forward for 1200 counts
+			case 5000:
 				
 				//Turn left to face the switch
 				lTalN.set(ControlMode.PercentOutput, -.3);
@@ -182,23 +198,25 @@ public class encPosB {
 				
 				break;
 				
-			case 4:
+			case 4200:
 				
+				if(rTalN.getSelectedSensorPosition(0)==4200){
 				//Begin raising arm and going towards the switch
 				lTalN.set(ControlMode.PercentOutput, .3);
 				rTalN.set(ControlMode.PercentOutput, -.3);
 				armTalN.set(ControlMode.Velocity, -6.5);
+				}
 				
 				break; 
 				
-			case 5:
+			case 6500:
 				
 				//Stop the arm from moving
 				armTalN.set(ControlMode.Velocity, -3);
 				
 				break;
 				
-			case 6:
+			case 8810:
 				
 				//Stop driving and start the intake
 				lTalN.set(ControlMode.PercentOutput, 0);
@@ -209,7 +227,6 @@ public class encPosB {
 				
 				default:
 					
-					//System.out.println("Defaulted to this in switch case");
 					
 					break;
 			
