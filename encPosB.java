@@ -93,8 +93,8 @@ public class encPosB {
 				
 				break;
 			
-			//Left encoder counts at 8100
-			//Go forward for 5100 counts
+			//Left encoder counts at 4400
+			//Go forward for 2200 counts
 			case 8900:
 				
 				//Turn right to the switch
@@ -104,10 +104,10 @@ public class encPosB {
 				break;
 			
 			//Turn for 800 counts (since wheels are moving backwards, encoder counts will go backwards as well)
-			case 8100:
+			case 9800:
 				
 				//Making sure that it will only go forward after it turns
-				if(lTalN.getSelectedSensorPosition(0) == 8100){
+				if(lTalN.getSelectedSensorPosition(0) == 9800){
 				//Stop to raise the arm
 				lTalN.set(ControlMode.PercentOutput, .3);
 				rTalN.set(ControlMode.PercentOutput, -.3);
@@ -117,14 +117,14 @@ public class encPosB {
 				
 				break;
 				
-			case 10000: 
+			case 11000: 
 				
 				//Stop the arm at a certain point while still moving
 				armTalN.set(ControlMode.Velocity, -3);
 				
 				break;
 				
-			case 12710: 
+			case 14420: 
 				
 				//Stop once at switch and spit out the cube
 				lTalN.set(ControlMode.PercentOutput, 0);

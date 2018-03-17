@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of a7f3e99... Merge branch 'master' of https://github.com/vkoutha/robot
 package org.usfirst.frc.team193.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -59,7 +62,7 @@ public class encPosA {
 		
 	}
 	
-	public void start(){
+	public void start(){		
 		
 		//If the switch is on the left side (go to the switch)
 		if(gameData.charAt(0) == 'L' && gameData.charAt(1)=='R'){
@@ -124,7 +127,7 @@ public class encPosA {
 			}
 //      ------------------------------------------------------------------------------
 				
-			//If the switch is not on the left side but the scale is (Going to the scale)
+			//If we own the scale on our side
 			}else if (gameData.charAt(1) == 'L'){
 				
 				switch(rightTalonMotor.getSelectedSensorPosition(0)){
@@ -226,4 +229,3 @@ public class encPosA {
 	}
 	
 }
-
