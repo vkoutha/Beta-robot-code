@@ -66,6 +66,7 @@ public class encPosC {
 			//Monitor the right talon motor for ease of turning
 			switch (rightTalonMotor.getSelectedSensorPosition(0)){
 			
+			//Go forward for 9216 counts
 			case 0:
 				
 				//Go all the way forward to side of the switch
@@ -73,8 +74,8 @@ public class encPosC {
 				rightTalonMotor.set(ControlMode.PercentOutput, -.5);
 				
 				break;
-			
-			//Go forward for 9216 counts of encoder
+				
+			//Turn for about 800 counts
 			case 9216:
 				
 				//Begin raising the arm and turning; Turn right so arm is facing the switch
@@ -83,8 +84,8 @@ public class encPosC {
 				TalonArmMotor.set(ControlMode.Velocity, -6.5);
 				
 				break;
-			
-			//Turn for about 800 counts (needs to be tested/changed)
+
+			//Go forward for 1000 counts
 			case 10000:
 				
 				//Go forward a small amount so robot hits switch
@@ -93,8 +94,8 @@ public class encPosC {
 				TalonArmMotor.set(ControlMode.Velocity, -3);
 				
 				break;
-				
-			//Go forward for 1000 counts (needs to be tested/changed)
+			
+			//Stop wheels and start intake
 			case 11000:
 				
 				//Stop wheels and start intake
@@ -129,6 +130,7 @@ public class encPosC {
 				//Monitor the left talon motor for ease of turning (since we turn the robot's back towards the scale)
 				switch(leftTalonMotor.getSelectedSensorPosition(0)){
 				
+				//Go straight for 17152 counts
 				case 0:
 					
 					//Go forward all the way to the side of the scale
@@ -137,7 +139,7 @@ public class encPosC {
 					
 					break;
 				
-				//Go forward for 17152 counts 
+				//Turn for 850 counts and raise the arm
 				case 17152:
 					
 					//Turn so that back of the robot is facing scale; Begin raising arm
@@ -147,7 +149,7 @@ public class encPosC {
 					
 					break;
 				
-				//Turn for about 850 counts
+				//Stop moving and spit cube out
 				case 18000:
 					
 					//Stop moving, stop the arm, and start the intake
@@ -165,7 +167,7 @@ public class encPosC {
 				//Raising the arm for the scale
 				if(upSwitch.get()==true && armRaising == true){
 					
-					TalonArmMotor.set(ControlMode.Velocity, -10);
+					TalonArmMotor.set(ControlMode.Velocity, -15);
 					
 				}else if (upSwitch.get()==false && armRaising == true){
 						
@@ -177,7 +179,7 @@ public class encPosC {
 				
 				//Starting the intake once arm raise is complete
 				
-				if (armRaising == false){
+				if (armRaising == false && upSwitch.get()==false){
 					TalonIntakeMotor.set(ControlMode.PercentOutput, -.65);
 				}
 				//Starting timer for intake to run
@@ -200,6 +202,7 @@ public class encPosC {
 			//Monitor left talon motor (side does not matter)
 			switch (leftTalonMotor.getSelectedSensorPosition(0)){
 			
+			//Go forward for 6656 counts
 			case 0:
 				
 				leftTalonMotor.set(ControlMode.PercentOutput, .5);
@@ -207,7 +210,6 @@ public class encPosC {
 				
 				break;
 			
-			//Go forward for 6656 counts
 			case 6656:
 				
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
