@@ -15,13 +15,11 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -37,8 +35,8 @@ public class Robot extends IterativeRobot {
 	private static final String auton2 = "Position A (L)"; //Written by Gavin and Moesha
 	private static final String auton3 = "Position B (M)";  //Written by Vedh
 	private static final String auton4 = "Position C (R)"; //Written by Gavin and Moesha
-	private static final String auton5	= "Pos Picker"; //Written by Nick	
-	private static final String auton6 = "Do nothing";
+	private static final String auton5	= "Do nothing"; //Written by Nick	
+
 	private String autonSelected;
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
@@ -53,7 +51,6 @@ public class Robot extends IterativeRobot {
 	boolean finalAuton = true;
 
 	    
-	//PowerDistributionPanel pDP = new PowerDistributionPanel(1);
 	//vic1 and vic2 follow rightTalon (they are its slaves)
 	TalonSRX rTal = new TalonSRX(4);
 	VictorSPX rVic1 = new VictorSPX(2);
@@ -81,51 +78,41 @@ public class Robot extends IterativeRobot {
 	DigitalInput downSwitch = new DigitalInput(1); //rSwitch
 	DigitalInput intakeSwitch = new DigitalInput(2);
 	
-	//Encoder lEnc = new Encoder(5, 0);
-	//Encoder rEnc = new Encoder(4, 0);
-	
 	Timer timer = new Timer();
 	
-	//Vinays code
 	armControl armC = new armControl(gControl, armTal, armVic, upSwitch, downSwitch);
 	
-	//Vedhs code
 	positionBSwitch posBSwitch = new positionBSwitch(AUTONSPEED, NAUTONSPEED, lTal, rTal, rVic1, rVic2, lVic1, lVic2, timer, armTal, armVic,
 			intakeTal, intakeVic, gameData);
-	/*pBS is NOT for PBS kids channel where you can watch Cyberchase or whatever that show with the giant talking computer giving out
-	missions was called*/
 	
 	//Agrons code
 	driveTrainIntake dTI = new driveTrainIntake(lJoy, rJoy, lTal, rTal, lVic1, lVic2, rVic1, rVic2
 				, gControl, intakeTal, intakeVic, intakeSwitch);
 	
-	//Madhur and Kevin's code
 	crossAutoLine crossAL = new crossAutoLine(rTal, lTal, rVic1, lVic1, rVic2, lVic2, timer);
 	
-	//Madhur and Kevin's code
 	camera cam = new camera();
 	
-	//Nick's code
 	startingPositionPickerAuton startingPositionPicker = new startingPositionPickerAuton(lTal, rTal, lVic1, lVic2, rVic1, rVic2, armTal
 			, armVic, intakeTal, intakeVic, timer, position, startingPosition, gameData);
 	
-	//Gavin and Moesha's code
 	positionASwitchScale posASwitchScale = new positionASwitchScale(rTal, lTal, armTal, armVic, intakeTal,
 			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, gameData);
 	
-	//Gavin and Moesha's code
 	positionCSwitchScale posCSwitchScale = new positionCSwitchScale(rTal, lTal, armTal, armVic, intakeTal,
 			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, gameData);
 	
-	encPosB ePB= new encPosB(AUTONSPEED, NAUTONSPEED, lTal, rTal, rVic1, rVic2, lVic1, lVic2, timer, armTal, armVic,
-			intakeTal, intakeVic);
 	
-	encPosA ePA = new encPosA(rTal, lTal, armTal, armVic, intakeTal,
-			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	//Encoder autons
+
 	
-	//Gavin and Moesha's code
-	encPosC ePC = new encPosC(rTal, lTal, armTal, armVic, intakeTal,
-			intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	encAL eAL = new encAL(lTal, rTal);
+	
+	encPosA ePA = new encPosA(rTal, lTal, armTal, armVic, intakeTal, intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
+	
+	encPosB ePB= new encPosB(rTal, lTal, rVic1, rVic2, lVic1, lVic2, timer, armTal, armVic, intakeTal, intakeVic);
+	
+	encPosC ePC = new encPosC(rTal, lTal, armTal, armVic, intakeTal, intakeVic, rVic1, rVic2, lVic1, lVic2, timer, upSwitch);
 	
 	
 
@@ -139,12 +126,11 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		//Make sure editable mode is disabled on SmartDashboard
-		autonChooser.addDefault("Cross autoline", auton1); //Madhur and Kevin ---- 14 Characters
-		autonChooser.addObject("Position A (L)", auton2); //Gavin and Moesha ---- 15 Characters
-		autonChooser.addObject("Position B (M)", auton3); //Vedh ---- 15 Characters
-		autonChooser.addObject("Position C (R)", auton4); //Gavin and Moesha ---- 15 Characters
-		autonChooser.addObject("Position Picker", auton5); //Nick ---- 15 Characters
-		autonChooser.addObject("Do nothing", auton6); // ---- 10 Characters
+		autonChooser.addDefault("Cross autoline", auton1); //14 Characters
+		autonChooser.addObject("Position A (L)", auton2); //15 Characters
+		autonChooser.addObject("Position B (M)", auton3); //15 Characters
+		autonChooser.addObject("Position C (R)", auton4); //15 Characters
+		autonChooser.addObject("Do nothing", auton5); //10 Characters
 		
 		SmartDashboard.putData("Auton Modes", autonChooser); 
 		 
@@ -168,13 +154,6 @@ public class Robot extends IterativeRobot {
 		
 		intakeVic.setInverted(true);
 		//Setting Intake victor opposite of intake talon
-		
-		
-		//Prints out random stuff that you don't really need to know
-		/*System.out.println("Temperature of PDP: " + pDP.getTemperature() + " Degrees Fahrenheit");
-		System.out.println("Voltage through Power Distribution Panel: " + pDP.getVoltage() + " volts");
-		System.out.println("Total current through all PDP channels: " + pDP.getTotalCurrent() + " amps");
-		System.out.println("Total power through all PDP channels: " + pDP.getTotalEnergy() + " watts");*/
 		
 		timer.start();
 	}
@@ -202,26 +181,24 @@ public class Robot extends IterativeRobot {
 		
 		System.out.println("Autonomous mode selected: " + autonSelected);
 		
-		//It prints the orientation of the scale and switch at the beginning of autonomous mode by giving it in three characters, either L or R. 
-		//This tells you whether your side of the game piece is on the left or right, starting from the side closest to you.
-		
+		//Getting gameData from field
 		gameData = DriverStation.getInstance().getGameSpecificMessage(); //Getting Switch-Scale orientation from DriverStation/Field
 		
 		posBSwitch.gameData = this.gameData; //Transferring gameData to auton classes
 		posASwitchScale.gameData = this.gameData; //Transferring gameData to auton classes
 		posCSwitchScale.gameData = this.gameData; //Transferring gameData to auton classes
-		startingPositionPicker.gameDataN = this.gameData; //Transferring gameData to auton classes
 		
-		position = Preferences.getInstance(); //Reading what position we are in from SmartDashboard
-		startingPosition = position.getString("startingPosition", null); //Get robot starting position
-		
-		startingPositionPicker.position = this.position; //Transferring position to Position Picker class
-		startingPositionPicker.startingPosition = this.startingPosition; //Transferring position to Position Picker class
+		ePA.gameData = this.gameData;
+		ePB.gameData = this.gameData;
+		ePC.gameData = this.gameData;
 		
 		System.out.println("Orientation of switch and scale: " + gameData);
 
 		timer.reset();
 		
+		//Resetting encoder positions for auton mode
+		lTal.setSelectedSensorPosition(0, 0, 0);
+		rTal.setSelectedSensorPosition(0, 0, 0);
 	}
 
 	/**
@@ -241,39 +218,34 @@ public class Robot extends IterativeRobot {
 		
 
 			case auton1:
-				//Written by Madhur and Kevin
-				crossAL.cAL();
+				
+				//Cross autoline
+				eAL.start();
 		
 				break;
 				
 			case auton2:
 				
-				posASwitchScale.posAStart();
+				//Position A (Left)
+				ePA.start();
 
 				break;
 			case auton3:
 				
-				//Written by Vedh
-				/*pBS is NOT for PBS kids channel where you can watch Cyberchase or whatever that show with the giant talking computer giving out
-				missions was called*/
-				posBSwitch.auton3posBSwitch();
+				//Position B (Middle)
+				ePB.start();
 
 				break;
 				
 			case auton4:
 				
-				//Written by Gavin and Moesha
-				posCSwitchScale.posCStart();
+				//Position C (Right)
+				ePC.start();
 
 				break;
 			case auton5:
 				
-				//Written by Nick
-				startingPositionPicker.positionPickerAuton();
-
-			case auton6:
-				
-				//Does nothing
+				//Do nothing
 				
 			default: 
 				
@@ -300,8 +272,19 @@ public class Robot extends IterativeRobot {
 		armC.armStart();
 		dTI.dTIntake();
 	
-		System.out.println("Velocity of left: " + lTal.getSelectedSensorVelocity(0));
-		System.out.println("Velocity of right: " + rTal.getSelectedSensorVelocity(0));		
+		if(gControl.getRawButton(2) == true){
+			
+			System.out.println("Left encoder counts: " + lTal.getSelectedSensorPosition(0));
+			
+		}else if (gControl.getRawButton(3)==true){
+			
+			System.out.println("Right encoder counts: " + rTal.getSelectedSensorPosition(0));
+			
+		}else{
+			
+			System.out.println("Left encoder counts: " + lTal.getSelectedSensorPosition(0));
+			System.out.println("Right encoder counts: " + rTal.getSelectedSensorPosition(0));
+		}
 		
 	}
 
@@ -312,4 +295,3 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 	}
 }
-
