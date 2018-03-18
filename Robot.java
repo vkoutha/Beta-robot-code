@@ -31,19 +31,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	private static final String auton1 = "Cross autoline"; //Written by Madhur and Kevin
-	private static final String auton2 = "Position A (L)"; //Written by Gavin and Moesha
-	private static final String auton3 = "Position B (M)";  //Written by Vedh
-	private static final String auton4 = "Position C (R)"; //Written by Gavin and Moesha
-	private static final String auton5	= "Do nothing"; //Written by Nick	
+	private static final String auton1 = "Cross autoline";
+	private static final String auton2 = "Position A (L)"; 
+	private static final String auton3 = "Position B (M)"; 
+	private static final String auton4 = "Position C (R)";
+	private static final String auton5	= "Do nothing"; 	
 
 	private String autonSelected;
 	private SendableChooser<String> autonChooser = new SendableChooser<>();
 
 	//String for switch/scale orientation
 	String gameData;
-	Preferences position;
-	String startingPosition;
 	
 	final double AUTONSPEED = .4;
 	final double NAUTONSPEED = -.4;
