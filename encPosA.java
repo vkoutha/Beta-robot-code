@@ -111,7 +111,7 @@ public class encPosA {
 					break;
 					
 					
-					}//End of switch statement
+					} //End of switch statement
 			
 			//Starting timer for intake to run
 			if (TalonIntakeMotor.getMotorOutputPercent() == -.5 && intakeStop == false){
