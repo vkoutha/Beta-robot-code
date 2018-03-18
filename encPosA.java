@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of a7f3e99... Merge branch 'master' of https://github.com/vkoutha/robot
 package org.usfirst.frc.team193.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -63,7 +59,7 @@ public class encPosA {
 		
 	}
 	
-	public void start(){		
+	public void start(){
 		
 		//If the switch is on the left side (go to the switch)
 		if(gameData.charAt(0) == 'L' && gameData.charAt(1)=='R'){
@@ -71,6 +67,7 @@ public class encPosA {
 			//Monitor left talon motor for ease of turning
 			switch (leftTalonMotor.getSelectedSensorPosition(0)){
 			
+			//Go forward for 9216 counts
 			case 0:
 				
 				//Go all the way forward to side of the switch
@@ -79,7 +76,7 @@ public class encPosA {
 				
 				break;
 			
-			//Go forward for 9216 counts
+			//Turn for about 800 counts
 			case 9216:
 				
 				//Begin raising the arm; Turn right so arm is facing the switch
@@ -89,7 +86,7 @@ public class encPosA {
 				
 				break;
 
-			//Turn for about 800 counts
+			//Go forward for about 1000 counts
 			case 10000:
 				
 				//Go forward a small amount so robot hits switch
@@ -99,7 +96,7 @@ public class encPosA {
 				
 				break;
 			
-			//Go forward for about 1000 counts
+			//Stop motors and start intake
 			case 11000:
 				
 				//Stop wheels and start intake
@@ -128,11 +125,12 @@ public class encPosA {
 			}
 //      ------------------------------------------------------------------------------
 				
-			//If we own the scale on our side
+			//If the switch is not on the left side but the scale is (Going to the scale)
 			}else if (gameData.charAt(1) == 'L'){
 				
 				switch(rightTalonMotor.getSelectedSensorPosition(0)){
 				
+				//Go forward for 17152 counts
 				case 0:
 					
 					//Go forward all the way to the side of the scale
@@ -141,7 +139,7 @@ public class encPosA {
 					
 					break;
 				
-				//Go forward for 17152 counts
+				//Turn for about 850 counts
 				case 17152:
 					
 					//Turn so that back of the robot is facing scale; Begin raising arm
@@ -151,7 +149,7 @@ public class encPosA {
 					
 					break;
 				
-				//Turn for about 850 counts
+				//Stop motors
 				case 18000:
 					
 					//Stop moving, stop the arm, and start the intake
@@ -184,6 +182,7 @@ public class encPosA {
 				if (armRaising == false && upSwitch.get()==false){
 					TalonIntakeMotor.set(ControlMode.PercentOutput, -.65);
 				}
+				
 				//Starting timer for intake to run
 				if (TalonIntakeMotor.getMotorOutputPercent() == -.65 && intakeStop == false){
 					time.reset();
@@ -202,9 +201,10 @@ public class encPosA {
 		}else if (gameData.charAt(0) == 'R' && gameData.charAt(1) == 'R'){
 			
 			
-			//Monitor left talon motor (motor to monitor doesn't matter)
+			//Monitor left talon motor (motor to monitor doesn't matter here)
 			switch (leftTalonMotor.getSelectedSensorPosition(0)){
 			
+			//Go forward for 6656 counts
 			case 0:
 				
 				leftTalonMotor.set(ControlMode.PercentOutput, .5);
@@ -230,3 +230,4 @@ public class encPosA {
 	}
 	
 }
+
