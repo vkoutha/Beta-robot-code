@@ -11,8 +11,6 @@ public class encPosB {
 
 	String gameData;
 	
-	double AUTONSPEEDN;
-	double NAUTONSPEEDN;
 	//leftTalon and rightTalon
 	TalonSRX lTalN;
 	TalonSRX rTalN;
@@ -36,7 +34,7 @@ public class encPosB {
 	boolean intakeStop = false;
 	
 	//Code written by Vedh
-	public encPosB(double AUTONSPEED, double NAUTONSPEED, TalonSRX lTal, TalonSRX rTal, VictorSPX rVic1, 
+	public encPosB(TalonSRX rTal, TalonSRX lTal, VictorSPX rVic1, 
 			VictorSPX rVic2, VictorSPX lVic1, VictorSPX lVic2, Timer timer, TalonSRX armTal, VictorSPX armVic, TalonSRX intakeTal, VictorSPX intakeVic){
 		
 		lTalN = lTal;
@@ -46,8 +44,6 @@ public class encPosB {
 		lVic1N = lVic1;
 		lVic2N = lVic2;
 		timerN = timer;
-		AUTONSPEEDN = AUTONSPEED;
-		NAUTONSPEEDN = NAUTONSPEED;
 		armTalN = armTal;
 		armVicN = armVic;
 		intakeTalN = intakeTal;
@@ -66,6 +62,7 @@ public class encPosB {
 			//Monitor right talon for ease of turning
 			switch (rTalN.getSelectedSensorPosition(0)){
 			
+			//Go forward for 3000 counts
 			case 0:
 				
 				//Go straight
@@ -74,7 +71,7 @@ public class encPosB {
 				
 				break;
 				
-			//Go forward for 3000 counts
+			//Turn for 800 counts
 			case 3000: 
 				
 				//Turn left
@@ -84,7 +81,8 @@ public class encPosB {
 				break;
 			
 			//Left encoder counts go to 2200 and right encoder counts go to 3800
-			//Turn for 800 counts
+				
+			//Go forward for 5100 counts
 			case 3800:
 				
 				//Go straight (facing left)
@@ -94,7 +92,8 @@ public class encPosB {
 				break;
 			
 			//Left encoder counts at 8100
-			//Go forward for 5100 counts
+				
+			//Turn for 800 counts (encoder counts will reverse as well)
 			case 8900:
 				
 				//Turn right to the switch
@@ -103,11 +102,11 @@ public class encPosB {
 				
 				break;
 			
-			//Turn for 800 counts (since wheels are moving backwards, encoder counts will go backwards as well)
+			//Go forward for 4610
 			case 8100:
 				
 				//Making sure that it will only go forward after it turns
-				if(lTalN.getSelectedSensorPosition(0) == 8100){
+				if(lTalN.getSelectedSensorPosition(0) >= 8100){
 				//Stop to raise the arm
 				lTalN.set(ControlMode.PercentOutput, .3);
 				rTalN.set(ControlMode.PercentOutput, -.3);
@@ -116,7 +115,8 @@ public class encPosB {
 				}
 				
 				break;
-				
+			
+			//Stops arm from moving
 			case 10000: 
 				
 				//Stop the arm at a certain point while still moving
@@ -162,6 +162,7 @@ public class encPosB {
 			
 			switch (lTalN.getSelectedSensorPosition(0)){
 			
+			//Go forward for 3000 counts
 			case 0:
 				
 				//Go straight for a little bit
@@ -170,7 +171,7 @@ public class encPosB {
 				
 				break;
 			
-			//Go forward for 3000 counts
+			//Turn for 800 counts
 			case 3000:
 				
 				//Turn to the right
@@ -179,8 +180,9 @@ public class encPosB {
 				
 				break;
 			
-			//Left encoder goes to 2200 counts
-			//Turn for 800 counts
+			//Right encoder goes to 2200 counts
+
+			//Go forward for 1200 counts
 			case 3800:
 				
 				//Go straight (facing the right)
@@ -189,7 +191,9 @@ public class encPosB {
 				
 				break;
 				
-			//Go forward for 1200 counts
+			//Right encoder goes to 3400 counts	
+			
+			//Turn for 800 counts (encoder counts will reverse due to turning direction)
 			case 5000:
 				
 				//Turn left to face the switch
@@ -197,7 +201,10 @@ public class encPosB {
 				rTalN.set(ControlMode.PercentOutput, -.3);
 				
 				break;
+			
+			//Right encoder goes to 4200 counts
 				
+			//Go forward for 4610 counts
 			case 4200:
 				
 				if(rTalN.getSelectedSensorPosition(0)==4200){
@@ -208,14 +215,16 @@ public class encPosB {
 				}
 				
 				break; 
-				
+			
+			//Stop arm at certain point from moving
 			case 6500:
 				
 				//Stop the arm from moving
 				armTalN.set(ControlMode.Velocity, -3);
 				
 				break;
-				
+			
+			//Stop moving and spit cube out
 			case 8810:
 				
 				//Stop driving and start the intake
