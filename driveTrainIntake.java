@@ -38,6 +38,9 @@ public class driveTrainIntake {
 		VictorSPX invertedIntake; 
 		
 		DigitalInput intakeLim;
+		
+		double talSpeed;
+		double vicSpeed;
 			
 		public driveTrainIntake(Joystick lJoy, Joystick rJoy, TalonSRX lTal, TalonSRX rTal, VictorSPX lVic1, VictorSPX lVic2, VictorSPX rVic1, VictorSPX rVic2
 				, Joystick gControl, TalonSRX intakeTal, VictorSPX intakeVic, DigitalInput intakeSwitch){
@@ -62,24 +65,45 @@ public class driveTrainIntake {
 	public void dTIntake(){
 		
 		//Drive train code
-		
-		
-		
 		 talonSRX1.set(ControlMode.PercentOutput, joy1.getY()*-1); 
 		 talonSRX2.set(ControlMode.PercentOutput, joy2.getY());
+			
+		 
+		 
+		/* if(joy3.getRawButtonPressed(5)==true){
+			 talSpeed = 1;
+		 }else if (joy3.getRawButtonPressed(7)==true){
+			 talSpeed = -1;
+		 }else{
+			 talSpeed = 0;
+		 }
+		 
+		 if (joy3.getRawButtonPressed(6)==true){
+			 vicSpeed = -1;
+		 }else if (joy3.getRawButtonPressed(8)==true){
+			 vicSpeed = 1;
+		 }else{
+			 vicSpeed = 0;
+		 }
+		 
+		 realIntake.set(ControlMode.PercentOutput, talSpeed);
+		 invertedIntake.set(ControlMode.PercentOutput, vicSpeed);*/
+		 
 		
-	
-			//If right button is pressed, suck cubes in
-			if  (joy3.getRawButtonPressed(6) == true && intakeLim.get()==true) {
+		 
+		 
+		 
+		//If right button is pressed, suck cubes in
+			if  (joy3.getRawButtonPressed(5) == true && intakeLim.get()==true) {
 				
-				realIntake.set(ControlMode.PercentOutput, -1);
+				realIntake.set(ControlMode.PercentOutput, 1);
 			//If right button is not pressed, turn off the intake
 				
-			}else if(joy3.getRawButtonReleased(6)==true && intakeLim.get()==true) {
+			}else if(joy3.getRawButtonReleased(5)==true) {
 				
 				realIntake.set(ControlMode.PercentOutput, 0);
 				
-			}else if (joy3.getRawButtonPressed(6)==true && intakeLim.get()==false){
+			}else if (joy3.getRawButtonPressed(5)==true && intakeLim.get()==false){
 				
 				//If limit switch is pressed and cubes are being sucked in, stop the motor
 				realIntake.set(ControlMode.PercentOutput, 0);
@@ -87,47 +111,62 @@ public class driveTrainIntake {
 			}
 			
 			//if left button is pressed, suck cubes in
-			if (joy3.getRawButtonPressed(5) == true && intakeLim.get()==true) {
+			if (joy3.getRawButtonPressed(6) == true && intakeLim.get()==true) {
 				
-				invertedIntake.set(ControlMode.PercentOutput, -1);
+				invertedIntake.set(ControlMode.PercentOutput, 1);
 			//If left button is not pressed, turn off the intake
 				
-			}else if(joy3.getRawButtonReleased(5)==true && intakeLim.get()==true) {
+			}else if(joy3.getRawButtonReleased(6)==true) {
 				
 				invertedIntake.set(ControlMode.PercentOutput, 0);
 				
-			}else if (joy3.getRawButtonPressed(5)==true && intakeLim.get()==false){
+			}else if (joy3.getRawButtonPressed(6)==true && intakeLim.get()==false){
 				//If limit switch is pressed and cubes are being sucked in, stop the motor
 				realIntake.set(ControlMode.PercentOutput, 0);
 				invertedIntake.set(ControlMode.PercentOutput, 0);
 			}
 			
 			//Controlling one intake side at a time
-			if (joy3.getRawButtonPressed(7)==true){
+			if (joy3.getRawButton(8)==true && joy3.getRawButton(2) == false){
 				
 				//If left trigger is pressed, push cubes out
-				invertedIntake.set(ControlMode.PercentOutput, 1);
+				invertedIntake.set(ControlMode.PercentOutput, -.45);
 				
-			}else if(joy3.getRawButtonReleased(7)==true){
+				
+			}else if (joy3.getRawButton(8)==true && joy3.getRawButton(2)==true){
+				
+				invertedIntake.set(ControlMode.PercentOutput, -.65);
+				
+			}else if(joy3.getRawButtonReleased(8)==true){
 				
 				//Stop motor if trigger is released
 				invertedIntake.set(ControlMode.PercentOutput, 0);
 				
 			}
 			
-
 			
-			if (joy3.getRawButtonPressed(8)==true){
+			
+			if (joy3.getRawButton(7)==true && joy3.getRawButton(2)==false){
 				
 				//If right trigger is pressed, push cubes out
-				realIntake.set(ControlMode.PercentOutput, 1);
+				realIntake.set(ControlMode.PercentOutput, -.45);
 				
-			}else if (joy3.getRawButtonReleased(8)==true){
+			}else if (joy3.getRawButton(7)==true && joy3.getRawButton(2)==true){
+				
+				realIntake.set(ControlMode.PercentOutput, -.65);
+				
+			}else if (joy3.getRawButtonReleased(7)==true){
 				
 				//Stop motor if trigger is released
 				realIntake.set(ControlMode.PercentOutput, 0);
 				
 			}
+			
+			//HALF SPEED PUSHING OUT CODE
+			
+				
+			
+			
 			
 			
 			
