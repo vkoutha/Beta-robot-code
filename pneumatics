@@ -1,0 +1,102 @@
+package org.usfirst.frc.team193.robot;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
+
+public class pneumatics {
+
+	DoubleSolenoid rPiston;
+	DoubleSolenoid lPiston;
+	Joystick gControl;
+	
+	int prevValue;
+	
+	
+	public pneumatics(DoubleSolenoid rPiston, DoubleSolenoid lPiston, Joystick gControl){
+		
+		this.rPiston = rPiston;
+		this.lPiston = lPiston;
+		this.gControl = gControl;		
+	}
+	
+	public void start(){
+			
+		if(gControl.getPOV()==180){
+			//If the controller has the up arrow being pressed, both CCD sides will go forward 
+			lPiston.set(DoubleSolenoid.Value.kForward);
+			rPiston.set(DoubleSolenoid.Value.kForward);
+			
+			if(prevValue != gControl.getPOV()){
+			System.out.println("Both pistons out");
+		}
+		
+		}else if(gControl.getPOV()==90){
+			//If the right arrow is pressed:
+
+			if(gControl.getPOV() == 90 && prevValue != gControl.getPOV(0)){
+			
+			if(rPiston.get()==DoubleSolenoid.Value.kForward){
+				//If the RCCD is in the forward position
+				rPiston.set(DoubleSolenoid.Value.kReverse);			
+				System.out.println("Right Piston inwards (starting position)");
+				
+			}else{
+				//If the RCCD is in the reverse position
+				rPiston.set(DoubleSolenoid.Value.kForward);
+				System.out.println("Right Piston outwards (pushed out)");
+				
+				
+			}
+			
+			
+			}
+		
+		}else if(gControl.getPOV()==0){
+			//If the down arrow is being pressed, both CCD will reverse
+			lPiston.set(DoubleSolenoid.Value.kReverse);
+			rPiston.set(DoubleSolenoid.Value.kReverse);
+			
+			if(prevValue != gControl.getPOV()){
+			System.out.println("Both pistons inwards (starting position)");
+			}
+			
+				
+		}else if(gControl.getPOV()==270){
+			//If the left arrow is being pressed:
+			
+			if(gControl.getPOV() == 270 && prevValue != gControl.getPOV(0)){
+				
+			if(lPiston.get()==DoubleSolenoid.Value.kForward){
+			//If the LCCD is in the forward position	
+				
+			lPiston.set(DoubleSolenoid.Value.kReverse);
+			System.out.println("Left piston inwards (starting position)");
+			
+			}else{
+			//If the LCCD is in the reverse or off position
+
+				lPiston.set(DoubleSolenoid.Value.kForward);
+				System.out.println("Left piston outwards (pushed out)");
+				
+			}
+			}
+			
+			
+		}else if(gControl.getPOV()==-1){
+			//If nothing is pressed, both CCD will be turned off
+	
+		
+		}else{
+			//If something goes wrong, both CCD will be turned off
+			
+		
+		}
+		
+		prevValue = gControl.getPOV();
+		
+		
+	}
+		
+	
+	
+}
