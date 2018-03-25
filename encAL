@@ -1,1 +1,39 @@
+package org.usfirst.frc.team193.robot;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+public class encAL {
+	
+	TalonSRX lTal;
+	TalonSRX rTal;
+	double CPI = 4096 / 18.84;
+	
+	public encAL(TalonSRX lTal, TalonSRX rTal){
+		
+		this.lTal = lTal;
+		this.rTal = rTal;
+		
+		
+	}
+	
+	public void start(){
+
+		//Go forward for 125 inches	
+		if (lTal.getSelectedSensorPosition(0) >= 0 && lTal.getSelectedSensorPosition(0) <= (CPI * 125)){
+			
+			lTal.set(ControlMode.PercentOutput, .15);
+			rTal.set(ControlMode.PercentOutput, -.15);
+			
+		//Stop after 125 inches
+		}else if (lTal.getSelectedSensorPosition(0) >= (CPI * 125)){
+			
+			lTal.set(ControlMode.PercentOutput, 0);
+			rTal.set(ControlMode.PercentOutput, 0);
+			
+		}
+	
+	}
+	
+}
 
