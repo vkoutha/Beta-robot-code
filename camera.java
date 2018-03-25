@@ -12,7 +12,6 @@ public class camera {
 	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 	camera.setResolution(1280, 720);
 	camera.setFPS(40);
-	
 	}
 
 	
