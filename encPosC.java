@@ -1,17 +1,20 @@
+
 package org.usfirst.frc.team193.robot;
+
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
 public class encPosC {
 
 	
-	String gameData;
+	String gameData = "RLR";
 	// Right Talon Motor- Drive
 	TalonSRX rightTalonMotor;
 	// Left Talon Motor- Drive
@@ -37,11 +40,19 @@ public class encPosC {
 	
 	DigitalInput upSwitch;
 	
+	DoubleSolenoid lPiston;
+	DoubleSolenoid rPiston;
+	
+	//Counts per inch
+	double CPI = 4096/18.84;
+	//One turn = 18.6 inches/4000 counts
+		
 	boolean intakeStop = false;
 	boolean armRaising = false;
+	boolean timerStart = false;
 	
 	public encPosC(TalonSRX rTal, TalonSRX lTal, TalonSRX armTal, VictorSPX armVic, TalonSRX intakeTal,
-			VictorSPX intakeVic, VictorSPX rVic1, VictorSPX rVic2, VictorSPX lVic1, VictorSPX lVic2, Timer timer, DigitalInput upSwitch){
+			VictorSPX intakeVic, VictorSPX rVic1, VictorSPX rVic2, VictorSPX lVic1, VictorSPX lVic2, Timer timer, DigitalInput upSwitch, DoubleSolenoid lPiston, DoubleSolenoid rPiston){
 		
 		rightTalonMotor = rTal;
 		leftTalonMotor = lTal;
@@ -55,176 +66,153 @@ public class encPosC {
 		VictorIntakeMotor = intakeVic;
 		time = timer;
 		this.upSwitch = upSwitch;
+		this.lPiston = lPiston;
+		this.rPiston = rPiston;
 		
 	}
 	
 	public void start(){
 		
-		//If we own the right side of the switch (go to the switch)
+		
+		//If the switch is on the left side (go to the switch)
 		if(gameData.charAt(0) == 'R' && gameData.charAt(1)=='L'){
 			
-			//Monitor the right talon motor for ease of turning
-			switch (rightTalonMotor.getSelectedSensorPosition(0)){
 			
-			//Go forward for 9216 counts
-			case 0:
+			//Go forward for 168 inches
+			if (rightTalonMotor.getSelectedSensorPosition(0) >= 0 && rightTalonMotor.getSelectedSensorPosition(0) < (CPI * 162) ){
 				
-				//Go all the way forward to side of the switch
-				leftTalonMotor.set(ControlMode.PercentOutput, .5);
-				rightTalonMotor.set(ControlMode.PercentOutput, -.5);
-				
-				break;
-				
-			//Turn for about 800 counts
-			case 9216:
-				
-				//Begin raising the arm and turning; Turn right so arm is facing the switch
-				leftTalonMotor.set(ControlMode.PercentOutput, -.3);
-				rightTalonMotor.set(ControlMode.PercentOutput, -.3);
-				TalonArmMotor.set(ControlMode.Velocity, -6.5);
-				
-				break;
-
-			//Go forward for 1000 counts
-			case 10000:
-				
-				//Go forward a small amount so robot hits switch
 				leftTalonMotor.set(ControlMode.PercentOutput, .3);
 				rightTalonMotor.set(ControlMode.PercentOutput, -.3);
-				TalonArmMotor.set(ControlMode.Velocity, -3);
 				
-				break;
-			
-			//Stop wheels and start intake
-			case 11000:
+			//Turn for 27 inches
+			}else if (rightTalonMotor.getSelectedSensorPosition(0) >= (CPI*162) && rightTalonMotor.getSelectedSensorPosition(0) < (CPI * 188) ){
 				
-				//Stop wheels and start intake
+				leftTalonMotor.set(ControlMode.PercentOutput, -.22);
+				rightTalonMotor.set(ControlMode.PercentOutput, -.22);
+				TalonArmMotor.set(ControlMode.Velocity, -7.5);
+
+			//Go forward for about 22 inches
+			}else if (rightTalonMotor.getSelectedSensorPosition(0) >= (CPI * 188) && rightTalonMotor.getSelectedSensorPosition(0) < (CPI*210)){
+				
+				leftTalonMotor.set(ControlMode.PercentOutput, .3);
+				rightTalonMotor.set(ControlMode.PercentOutput, -.3);
+				TalonArmMotor.set(ControlMode.Velocity, -2);
+				
+				
+			//Start intake once at the switch
+			}else if (rightTalonMotor.getSelectedSensorPosition(0) >= (CPI*210) && time.get()<1.5){
+				
+				
+				
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
 				rightTalonMotor.set(ControlMode.PercentOutput, 0);
-				TalonIntakeMotor.set(ControlMode.PercentOutput, -.5);
-				
-				break;
-				
-				default: 
-					
-					break;
-					
-					
-					}//End of switch statement
+				TalonIntakeMotor.set(ControlMode.PercentOutput, -.25);
 			
-			//Starting timer for intake to run
-			if (TalonIntakeMotor.getMotorOutputPercent() == -.5 && intakeStop == false){
-				time.reset();
-				intakeStop = true;
-			}
-			
-			//Stopping the intake 
-			if (time.get() > 1.5 && intakeStop == true){
+				if (timerStart == false){
+					
+					time.start();
+					
+				}
+				
+				timerStart = true;
+				
+			}else if (rightTalonMotor.getSelectedSensorPosition(0) > (CPI * 210) && time.get() > 1.5){
+				
 				TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
+				
 			}
+			
+			if(DriverStation.getInstance().getMatchTime() < 8){
+				
+				TalonIntakeMotor.set(ControlMode.PercentOutput, -.25);
+				
+			}
+			
+		
+				
+			
 //      ------------------------------------------------------------------------------
 				
-			//If the switch is not on our side but the scale is (go to the scale)
+			//If the switch is not on the left side but the scale is (Going to the scale)
 			}else if (gameData.charAt(1) == 'R'){
 				
-				//Monitor the left talon motor for ease of turning (since we turn the robot's back towards the scale)
-				switch(leftTalonMotor.getSelectedSensorPosition(0)){
+				//Go forward for 314 inches
+				if (leftTalonMotor.getSelectedSensorPosition(0) < (CPI * 285)){
+					
+					leftTalonMotor.set(ControlMode.PercentOutput, .4);
+					rightTalonMotor.set(ControlMode.PercentOutput, -.4);
 				
-				//Go straight for 17152 counts
-				case 0:
+				//Turn for 18.5 inches
+				}else if (leftTalonMotor.getSelectedSensorPosition(0) >= (CPI * 285) && leftTalonMotor.getSelectedSensorPosition(0) < (CPI * 322)){
 					
-					//Go forward all the way to the side of the scale
-					leftTalonMotor.set(ControlMode.PercentOutput, .5);
-					rightTalonMotor.set(ControlMode.PercentOutput, -.5);
-					
-					break;
+					leftTalonMotor.set(ControlMode.PercentOutput, .35);
+					rightTalonMotor.set(ControlMode.PercentOutput, .35);
 				
-				//Turn for 850 counts and raise the arm
-				case 17152:
+				//Go forward for little bit
+				}else if (leftTalonMotor.getSelectedSensorPosition(0) >= (CPI*322) && leftTalonMotor.getSelectedSensorPosition(0) < (CPI * 326)){
 					
-					//Turn so that back of the robot is facing scale; Begin raising arm
-					leftTalonMotor.set(ControlMode.PercentOutput, .3);
-					rightTalonMotor.set(ControlMode.PercentOutput, .3);
+					leftTalonMotor.set(ControlMode.PercentOutput, .15);
+					rightTalonMotor.set(ControlMode.PercentOutput, -.15);
 					armRaising = true;
+
+				}else if (leftTalonMotor.getSelectedSensorPosition(0) >= (CPI * 326)){
 					
-					break;
-				
-				//Stop moving and spit cube out
-				case 18000:
-					
-					//Stop moving, stop the arm, and start the intake
 					leftTalonMotor.set(ControlMode.PercentOutput, 0);
 					rightTalonMotor.set(ControlMode.PercentOutput, 0);
 					
-					break;
-					
-					default:
-						
-						break;
-						
-				}//End of switch statement
+				}
 				
 				//Raising the arm for the scale
 				if(upSwitch.get()==true && armRaising == true){
 					
-					TalonArmMotor.set(ControlMode.Velocity, -15);
-					
-				}else if (upSwitch.get()==false && armRaising == true){
+					TalonArmMotor.set(ControlMode.Velocity, -8);
+				
+				//Start the intake once arm is fully raised
+				}else if (upSwitch.get()==false && time.get() < 1.5){
 						
 					TalonArmMotor.set(ControlMode.Velocity, 0);
 					TalonArmMotor.setIntegralAccumulator(0, 0, 0);
-					armRaising = false;
+					TalonIntakeMotor.set(ControlMode.PercentOutput, -.3);
+					
+					//Start the timer for intake
+					if(timerStart == false){
+						
+						time.start();
 						
 					}
+					
+					timerStart = true;
 				
-				//Starting the intake once arm raise is complete
-				
-				if (armRaising == false && upSwitch.get()==false){
-					TalonIntakeMotor.set(ControlMode.PercentOutput, -.65);
-				}
-				//Starting timer for intake to run
-				if (TalonIntakeMotor.getMotorOutputPercent() == -.65 && intakeStop == false){
-					time.reset();
-					intakeStop = true;
-				}
-				
-				//Stopping the intake 
-				if (time.get() > 1.5 && intakeStop == true){
+				//Stop intake after 1.5 seconds
+				}else if (time.get()>1.5){
+					
 					TalonIntakeMotor.set(ControlMode.PercentOutput, 0);
-				
-			}
+					
+				}
 			
-//		----------------------------------------------------------------------------
-				
-		//If neither the switch nor the scale is on our side, the right side (just cross the autoline)
+//	 ----------------------------------------------------------------------------
+		
+		//If neither the switch nor the scale is on our left side (Just cross the autoline)
 		}else if (gameData.charAt(0) == 'L' && gameData.charAt(1) == 'L'){
 			
-			//Monitor left talon motor (side does not matter)
-			switch (leftTalonMotor.getSelectedSensorPosition(0)){
 			
-			//Go forward for 6656 counts
-			case 0:
+			if (leftTalonMotor.getSelectedSensorPosition(0) >= 0 && leftTalonMotor.getSelectedSensorPosition(0) < (CPI * 125)){
 				
-				leftTalonMotor.set(ControlMode.PercentOutput, .5);
-				rightTalonMotor.set(ControlMode.PercentOutput, -.5);
+				leftTalonMotor.set(ControlMode.PercentOutput, .15);
+				rightTalonMotor.set(ControlMode.PercentOutput, -.15);
 				
-				break;
-			
-			case 6656:
+			}else if (leftTalonMotor.getSelectedSensorPosition(0) >= (CPI * 125)){
 				
 				leftTalonMotor.set(ControlMode.PercentOutput, 0);
 				rightTalonMotor.set(ControlMode.PercentOutput, 0);
 				
-				break;
-				
-				default:
-					
-					break;
-			
 			}
+					
+					
 			
 		} // End of gameData if statements
 		
 	}
 	
 }
+
